@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+---
+
+<section id="about" class="section" aria-labelledby="about-heading">
+  <div class="container">
+    <h2 id="about-heading">About</h2>
+    <div class="prose">
+      {site.about.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .prose p {
+    text-wrap: pretty;
+  }
+</style>
