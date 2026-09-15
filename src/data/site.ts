@@ -25,7 +25,7 @@ export const site = {
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-handle', external: true },
     { label: 'Resume', href: '/resume.pdf', external: true },
     { label: 'Email', href: 'mailto:hello@example.com' },
-    { label: 'Writing', href: 'https://example.com/writing', external: true },
+    { label: 'Writing', href: 'https://medium.com/@felixwangshigiou', external: true },
   ] satisfies SiteLink[],
 
   /** 2-3 short paragraphs. Plain text; each string is one <p>. */
