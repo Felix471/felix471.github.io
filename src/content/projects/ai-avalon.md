@@ -1,36 +1,40 @@
 ---
-title: AI Avalon
 slug: ai-avalon
-summary: "Language-model agents playing The Resistance: Avalon, with a viewer for watching them bluff each other."
-thumbnail: ../../assets/projects/ai-avalon.svg
-tags: [Python, Agents, Game Theory]
-repo_url: https://github.com/Felix471/ai-avalon
-order: 3
-featured: false
+title: AI Avalon
+summary: "A playable web game and a 140-game dataset in which language models play the social-deduction game The Resistance: Avalon."
+links:
+  - { label: Play, href: 'https://ai-avalon.com' }
+  - { label: Source, href: 'https://github.com/Felix471/avalon-ai' }
+image: ../../assets/projects/ai-avalon-table.png
+tone: dark
+alt: AI Avalon game table with player roles and the voting interface in Chinese
+caption: The AI Avalon game table in Chinese, shown with mock models.
 ---
 
 ## What it is
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. AI Avalon runs a full
-game of Avalon between five to ten model-driven players and records every
-message, vote and private reasoning trace for replay.
+Language models discuss, vote and run quests in The Resistance: Avalon. The web game and the batch runner share the same TypeScript game engine. The frozen dataset contains 140 games across nine configurations.
 
-## Why I built it
+## What it measured
 
-Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit
-amet orci. Aenean dignissim pellentesque felis. Hidden-role games are a compact
-test of whether a model can hold a consistent deception over many turns.
+The study compared evil-side win rates under a full prompt with strategy guidance and a naive prompt with role and game state.
 
-## How it works
+| Matched pair | Full prompt | Naive prompt | p |
+| --- | ---: | ---: | ---: |
+| GPT | 7/15 | 14/15 | 0.0053 |
+| Claude | 11/15 | 11/15 | 1.0000 |
+| Mixed providers | 19/20 | 12/15 | 0.1675 |
 
-Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in,
-pharetra a, ultricies in, diam. Sed arcu. Cras consequat.
+## What it does not do
 
-- Each player is a separate agent with its own memory
-- A referee agent enforces the rules and never sees private reasoning
-- The viewer replays a game turn by turn and highlights when a claim contradicts a private trace
+Only the GPT pair was statistically significant. Its sample was 15 games per arm. A logger bug left a wrong round number in 144 of 564 quest records, so the analysis derives rounds from quest order and results from quest actions. Some stored discussion lines are canned provider-failure text.
 
-## What I learned
+## Reproduce it
 
-Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit
-mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris.
+From the source checkout, regenerate the summaries and statistics from the frozen dataset.
+
+```sh
+npm install
+npm run metrics
+python analysis/stats.py
+```

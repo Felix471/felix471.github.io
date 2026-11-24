@@ -1,45 +1,33 @@
 ---
-title: Retrace
 slug: retrace
-summary: Replay and diff production traces locally to find the request that broke things.
-thumbnail: ../../assets/projects/retrace.svg
-tags: [Rust, Observability, CLI]
-demo_url: https://example.com/retrace
-repo_url: https://github.com/Felix471/retrace
-order: 1
-featured: true
+title: Retrace
+summary: A local-first viewer for replaying, tagging and comparing multi-agent logs.
+links:
+  - { label: Source, href: 'https://github.com/Felix471/Retrace' }
+image: ../../assets/projects/retrace-compare.png
+tone: light
+alt: Retrace aligns two support runs and highlights their first divergence
+caption: Side-by-side comparison of two runs in Retrace.
 ---
 
 ## What it is
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Retrace records the
-requests a service receives in production and lets you replay them against a
-local build, then diffs the responses so the regression shows up as a red line
-instead of a vague bug report.
+Retrace opens structured multi-agent logs locally. The run table supports sorting and filtering. The replay view presents events in order and lets you attach failure tags and notes.
 
-## Why I built it
+## What it measured
 
-Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-commodo consequat.
+Validation of the bundled demo reported 40 runs and 523 events with zero warnings. Retrace makes zero outbound network requests. The public tests check that the code imports nothing capable of outbound requests and that the served interface contains no external URLs. They also check that the viewer binds to loopback by default and that tagging leaves the source logs byte-identical.
 
-- Captures traffic with a sidecar, no code changes required
-- Redacts headers and bodies using a small allow-list DSL
-- Replays at 1x, 10x or "as fast as possible"
+## What it does not do
 
-## How it works
+Retrace accepts structured logs only. The comparison aligns stored events and identifies differences in structure and content. It does not measure semantic similarity. Custom Python adapters are unavailable in v1.
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+## Reproduce it
+
+Install from the source checkout with Python 3.11 or newer and pipx.
 
 ```sh
-retrace record --service api --minutes 5 > traffic.jsonl
-retrace replay traffic.jsonl --against http://localhost:8080 --diff
+pipx install .
+retrace-logs check demo/
+retrace-logs view demo/
 ```
-
-## What I learned
-
-Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius,
-turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis
-sollicitudin mauris.

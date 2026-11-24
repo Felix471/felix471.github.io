@@ -1,0 +1,79 @@
+---
+import fly from '../assets/site/fly.png';
+import { dishes } from '../data/fly-picker';
+import { pickDish } from '../lib/fly-picker';
+
+const initial = pickDish(dishes);
+---
+
+<section class="tasting" aria-labelledby="fly-title">
+  <div class="menu-heading">
+    <h2 id="fly-title"><a href="/projects/ask-the-fly/">Ask the Fly</a></h2>
+    <p>A taste test with 139,000 simulated fruit-fly neurons.</p>
+  </div>
+  <form id="fly-menu" autocomplete="off">
+    <img class="sprite fly" src={fly.src} alt="" width={fly.width} height={fly.height} />
+    <fieldset class="dish-picker">
+      <legend>Which dishes should the fly try?</legend>
+      {dishes.map(({ name, sprite, hz }) => {
+        const label = name.charAt(0).toUpperCase() + name.slice(1);
+        const id = `dish-${name.replaceAll(' ', '-')}`;
+        return (
+          <label class:list={['dish', { winner: name === initial.winner }]}>
+            <input type="checkbox" name="dish" data-name={name} value={hz} aria-labelledby={id} checked />
+            <img class="sprite" src={sprite.src} alt="" width={sprite.width} height={sprite.height} />
+            <span class="dish-name" id={id}>{label}</span>
+            <span class="dish-reading">
+              <span class="hz-bar" aria-hidden="true">{hz > 0 && <i style={`--reading: ${hz}%`}></i>}</span>
+              <span class="dish-rate">{hz.toFixed(1)} Hz</span>
+            </span>
+          </label>
+        );
+      })}
+    </fieldset>
+    <div class="picker-action">
+      <button type="submit" disabled>Ask the fly</button>
+      <p class="verdict" role="status">{initial.verdict.replace('The fly picked', 'Picked')}</p>
+    </div>
+  </form>
+  <p class="model-note">Readings are precomputed firing rates of one feeding motor neuron in a published fruit-fly brain model. Higher means a stronger response. <a href="https://askthefly.app/">Full tasting menu</a>.</p>
+</section>
+
+<script>
+  import { pickDish } from '../lib/fly-picker';
+
+  const form = document.querySelector<HTMLFormElement>('#fly-menu');
+  if (form) {
+    const rows = Array.from(form.querySelectorAll<HTMLLabelElement>('.dish'), (row) => ({
+      row,
+      checkbox: row.querySelector<HTMLInputElement>('input')!,
+      reading: row.querySelector<HTMLElement>('.dish-reading')!,
+    }));
+    const verdict = form.querySelector<HTMLElement>('.verdict')!;
+    const button = form.querySelector<HTMLButtonElement>('button')!;
+
+    form.addEventListener('change', () => {
+      verdict.textContent = 'Selection changed. Ask the fly again.';
+      for (const { row, reading } of rows) {
+        row.classList.remove('winner');
+        reading.hidden = true;
+      }
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const selected = rows.filter(({ checkbox }) => checkbox.checked).map(({ checkbox }) => ({
+        name: checkbox.dataset.name!,
+        hz: Number(checkbox.value),
+      }));
+      const result = pickDish(selected);
+      for (const { row, checkbox, reading } of rows) {
+        row.classList.toggle('winner', result.winner === checkbox.dataset.name);
+        reading.hidden = !checkbox.checked;
+      }
+      verdict.textContent = result.verdict;
+    });
+
+    button.disabled = false;
+  }
+</script>

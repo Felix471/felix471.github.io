@@ -1,17 +1,19 @@
 ---
+import '@fontsource-variable/newsreader/standard.css';
+import '@fontsource-variable/source-sans-3/wght.css';
 import '../styles/global.css';
 import { site } from '../data/site';
+import { poetry } from '../data/poems';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
-  /** Page title; the site name is appended automatically. */
   title?: string;
   description?: string;
 }
 
 const { title, description = site.description } = Astro.props;
-const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -19,45 +21,50 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      (function () {
+        var stored;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (e) {}
+        var theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="generator" content={Astro.generator} />
-    {/* Set the theme before first paint to avoid a flash. Runs inline, no network. */}
-    <script is:inline>
-      (function () {
-        try {
-          var stored = localStorage.getItem('theme');
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch (e) {}
-      })();
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="container site-header__inner">
-        <a class="site-header__home" href="/">{site.name}</a>
-        <nav aria-label="Primary" class="site-header__nav">
-          <a href="/#projects">Projects</a>
-          <a href="/#about">About</a>
-          <a href="/#writing">Writing</a>
-          <ThemeToggle />
-        </nav>
-      </div>
+    <header class="masthead">
+      <a class="folio" href="/">
+        {site.name}
+        <svg class="folio-stamp" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="23" height="23" rx="2" fill="none" stroke="currentColor" stroke-width="1.75" />
+          <path d="M8 7h10M8 7v12M8 13h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+          <circle cx="18.5" cy="18.5" r="1.5" fill="currentColor" />
+        </svg>
+      </a>
+      <nav aria-label="Primary">
+        <a href="/#projects">Projects</a>
+        {poetry.poems.length > 0 && <a href="/#poetry">Poetry</a>}
+        {site.about.length > 0 && <a href="/#about">About</a>}
+        <a href="/#contact">Contact</a>
+        <ThemeToggle />
+      </nav>
     </header>
     <main id="main" tabindex="-1">
       <slot />
@@ -65,43 +72,3 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <Footer />
   </body>
 </html>
-
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
-  }
-  .site-header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: 3.5rem;
-  }
-  .site-header__home {
-    font-weight: 700;
-    color: var(--fg);
-    text-decoration: none;
-  }
-  .site-header__nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .site-header__nav a {
-    color: var(--fg-muted);
-    text-decoration: none;
-    font-size: 0.95rem;
-  }
-  .site-header__nav a:hover {
-    color: var(--fg);
-    text-decoration: underline;
-  }
-  main:focus {
-    outline: none;
-  }
-</style>

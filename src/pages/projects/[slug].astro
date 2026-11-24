@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import LinksRow from '../../components/LinksRow.astro';
+import ProjectPlate from '../../components/ProjectPlate.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -12,105 +13,19 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const { title, summary, thumbnail, tags, demo_url, repo_url, writeup_url } = project.data;
+const { title, summary, links } = project.data;
 const { Content } = await render(project);
-
-const links = [
-  demo_url && { label: 'Live demo', href: demo_url },
-  repo_url && { label: 'Source code', href: repo_url },
-  writeup_url && { label: 'External write-up', href: writeup_url },
-].filter(Boolean) as { label: string; href: string }[];
 ---
 
 <Base title={title} description={summary}>
-  <article class="project section">
-    <div class="container">
-      <p class="project__back"><a href="/#projects">&larr; All projects</a></p>
-      <header class="project__header">
-        <h1>{title}</h1>
-        <p class="project__summary">{summary}</p>
-        {
-          tags.length > 0 && (
-            <ul class="tags" aria-label="Tags">
-              {tags.map((tag) => (
-                <li class="tag">{tag}</li>
-              ))}
-            </ul>
-          )
-        }
-        {
-          links.length > 0 && (
-            <ul class="project__links" aria-label="Project links">
-              {links.map((link) => (
-                <li>
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                    <span class="visually-hidden"> (opens in a new tab)</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )
-        }
-      </header>
-      <Image
-        class="project__thumb"
-        src={thumbnail}
-        alt={`${title} thumbnail`}
-        widths={[640, 1280]}
-        sizes="(min-width: 72rem) 68rem, 92vw"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <div class="prose project__body">
-        <Content />
-      </div>
-    </div>
+  <article class="project-page">
+    <p><a href="/#projects">Back to projects</a></p>
+    <header>
+      <h1 class="section-heading">{title}</h1>
+      <p class="project-summary">{summary}</p>
+      <LinksRow links={links} />
+    </header>
+    <ProjectPlate project={project.data} />
+    <div class="prose"><Content /></div>
   </article>
 </Base>
-
-<style>
-  .project__back {
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-  }
-  .project__header {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    max-width: var(--measure);
-  }
-  .project__header h1,
-  .project__summary {
-    margin: 0;
-  }
-  .project__summary {
-    font-size: 1.2rem;
-    color: var(--fg-muted);
-    text-wrap: pretty;
-  }
-  .project__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-weight: 500;
-  }
-  .project__thumb {
-    width: 100%;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    margin-bottom: 2.5rem;
-  }
-  .project__body :global(h2) {
-    margin-top: 2rem;
-    font-size: 1.5rem;
-  }
-  .project__body :global(ul),
-  .project__body :global(ol) {
-    padding-left: 1.25rem;
-  }
-</style>

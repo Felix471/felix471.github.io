@@ -1,37 +1,33 @@
-// Everything on the site that is not a project lives here.
-// Edit this file, not the components.
+interface Site {
+  name: string;
+  tagline: string;
+  description: string;
+  lang: string;
+  github: string;
+  email?: string;
+  linkedin?: string;
+  resume?: string;
+  about: string[];
+}
 
-export type SiteLink = {
-  label: string;
-  href: string;
-  /** Opens in a new tab (external links, PDF). */
-  external?: boolean;
-};
-
-export const site = {
-  /** Used in the <title>, hero and footer. */
+export const site: Site = {
   name: 'Felix',
-  /** One-line positioning under the name. */
-  tagline: 'Software engineer building tools for people who think with data.',
-  /** Shown in <meta name="description"> and social cards. */
-  description:
-    'Personal portfolio of Felix: selected projects, writing and contact links.',
-  /** Language of the content. */
+  tagline: 'Software engineer',
+  description: 'Projects by Felix: Ask the Fly, Retrace, basis and AI Avalon.',
   lang: 'en',
-
-  /** Links row, rendered in the hero and repeated in the footer. */
-  links: [
-    { label: 'GitHub', href: 'https://github.com/Felix471', external: true },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-handle', external: true },
-    { label: 'Resume', href: '/resume.pdf', external: true },
-    { label: 'Email', href: 'mailto:hello@example.com' },
-    { label: 'Writing', href: 'https://medium.com/@felixwangshigiou', external: true },
-  ] satisfies SiteLink[],
-
-  /** 2-3 short paragraphs. Plain text; each string is one <p>. */
-  about: [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. I build small, sharp tools and occasionally write about the process. Most of my recent work sits at the intersection of data pipelines, developer experience and interfaces that stay out of the way.',
-    'Before this I spent a few years doing sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, which taught me that the boring parts of a system are usually where the leverage is.',
-    'Away from the keyboard: ut enim ad minim veniam, quis nostrud exercitation. If any of the projects above look interesting, my inbox is open.',
-  ],
+  github: 'https://github.com/Felix471',
+  email: 'FelixWangShigiOu@outlook.com',
+  linkedin: 'https://www.linkedin.com/in/ziyi-wang-984378125/',
+  about: [],
 };
+
+export const contactLinks = [
+  { label: 'GitHub', href: site.github },
+  { label: 'Email', href: site.email ? `mailto:${site.email}` : undefined },
+  { label: 'LinkedIn', href: site.linkedin },
+];
+
+export const coverLinks = [
+  { label: 'Résumé', href: site.resume },
+  ...contactLinks,
+];

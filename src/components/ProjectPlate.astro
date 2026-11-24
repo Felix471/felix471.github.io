@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+}
+
+const { project } = Astro.props;
+---
+
+{'image' in project ? (
+  <figure class:list={['plate', `plate--${project.tone}`]}>
+    <div class="plate-frame">
+      <Image
+        src={project.image}
+        alt={project.alt}
+        widths={[400, 800, project.image.width]}
+        sizes={project.tone === 'dark'
+          ? '(max-width: 32.5rem) calc(100vw - 40px), 480px'
+          : '(max-width: 48rem) calc(100vw - 40px), 800px'}
+        loading="lazy"
+      />
+    </div>
+    <figcaption>{project.caption}</figcaption>
+  </figure>
+) : (
+  <figure class="terminal">
+    <pre><code>{project.panel}</code></pre>
+    <figcaption>{project.caption}</figcaption>
+  </figure>
+)}

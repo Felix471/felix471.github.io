@@ -1,60 +1,11 @@
 ---
-import { site } from '../data/site';
-
 interface Props {
-  /** Accessible label for the <nav>. */
-  label: string;
-  size?: 'default' | 'small';
+  links: { label: string; href?: string }[];
 }
 
-const { label, size = 'default' } = Astro.props;
+const { links } = Astro.props;
 ---
 
-<nav aria-label={label} class:list={['links', { 'links--small': size === 'small' }]}>
-  <ul>
-    {
-      site.links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            target={link.external ? '_blank' : undefined}
-            rel={link.external ? 'noopener noreferrer' : undefined}
-          >
-            {link.label}
-            {link.external && <span class="visually-hidden"> (opens in a new tab)</span>}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
-</nav>
-
-<style>
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.75rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  a {
-    display: inline-block;
-    padding: 0.45em 0.9em;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--bg-elevated);
-    color: var(--fg);
-    text-decoration: none;
-    font-weight: 500;
-    transition: border-color 150ms ease, color 150ms ease;
-  }
-  a:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .links--small a {
-    padding: 0.3em 0.7em;
-    font-size: 0.875rem;
-  }
-</style>
+<div class="links-row">
+  {links.map(({ label, href }) => href && <a href={href}>{label}</a>)}
+</div>

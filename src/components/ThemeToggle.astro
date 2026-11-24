@@ -6,6 +6,7 @@
   id="theme-toggle"
   class="theme-toggle"
   type="button"
+  hidden
   aria-label="Toggle dark mode"
   aria-pressed="false"
   title="Toggle dark mode"
@@ -23,36 +24,24 @@
   .theme-toggle {
     display: inline-grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 44px;
+    height: 44px;
     padding: 0;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--bg-elevated);
+    border: 0;
+    color: var(--ink-colour);
+    background: transparent;
     cursor: pointer;
-    transition: border-color 150ms ease;
   }
-  .theme-toggle:hover {
-    border-color: var(--fg-muted);
-  }
-  .icon {
-    grid-area: 1 / 1;
-  }
-  /* Show the icon for the theme you would switch *to*. */
-  .icon--sun {
-    display: none;
-  }
-  :global(:root[data-theme='dark']) .icon--sun {
-    display: block;
-  }
-  :global(:root[data-theme='dark']) .icon--moon {
-    display: none;
-  }
+
+  .theme-toggle[hidden], .icon--sun { display: none; }
+  .theme-toggle:hover { background: var(--wash); }
+  :global(:root[data-theme='dark']) .icon--sun { display: block; }
+  :global(:root[data-theme='dark']) .icon--moon { display: none; }
 </style>
 
 <script>
   const root = document.documentElement;
-  const button = document.getElementById('theme-toggle');
+  const button = document.querySelector<HTMLButtonElement>('#theme-toggle');
   const media = window.matchMedia('(prefers-color-scheme: dark)');
 
   function current(): 'light' | 'dark' {
@@ -65,10 +54,24 @@
   }
 
   apply(current());
+  if (button) button.hidden = false;
+
+  function storedChoice(): boolean {
+    try {
+      const stored = localStorage.getItem('theme');
+      return stored === 'light' || stored === 'dark';
+    } catch {
+      return false;
+    }
+  }
+
+  // Remembered in memory too, so the choice holds when storage is unavailable.
+  let chosen = storedChoice();
 
   button?.addEventListener('click', () => {
     const next = current() === 'dark' ? 'light' : 'dark';
     apply(next);
+    chosen = true;
     try {
       localStorage.setItem('theme', next);
     } catch {}
@@ -76,9 +79,7 @@
 
   // Follow the OS while the user has not made an explicit choice.
   media.addEventListener('change', (e) => {
-    try {
-      if (localStorage.getItem('theme')) return;
-    } catch {}
+    if (chosen) return;
     apply(e.matches ? 'dark' : 'light');
   });
 </script>

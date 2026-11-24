@@ -1,25 +1,26 @@
 ---
-import { site } from '../data/site';
+import { coverLinks, site } from '../data/site';
+import FlyPicker from './FlyPicker.astro';
 import LinksRow from './LinksRow.astro';
 ---
 
-<section class="hero section" aria-labelledby="hero-heading">
-  <div class="container">
-    <h1 id="hero-heading">{site.name}</h1>
-    <p class="hero__tagline">{site.tagline}</p>
-    <LinksRow label="Profiles and contact" />
-  </div>
-</section>
-
-<style>
-  .hero {
-    padding-block: clamp(3.5rem, 12vw, 7rem);
-  }
-  .hero__tagline {
-    font-size: clamp(1.125rem, 2.5vw, 1.375rem);
-    color: var(--fg-muted);
-    max-width: var(--measure);
-    margin-bottom: 1.75rem;
-    text-wrap: pretty;
-  }
-</style>
+<div class="opening">
+  <section class="cover" aria-labelledby="name">
+    <h1 id="name">{site.name}</h1>
+    <p class="role">{site.tagline}</p>
+    <dl class="bio">
+      <div>
+        <dt>Education</dt>
+        <dd>MS Computer Science<br />Northeastern, Dec 2026</dd>
+      </div>
+      <div>
+        <dt>Languages</dt>
+        <dd>English, Japanese, Chinese</dd>
+      </div>
+    </dl>
+    <div class="cover-links">
+      <LinksRow links={coverLinks} />
+    </div>
+  </section>
+  <FlyPicker />
+</div>

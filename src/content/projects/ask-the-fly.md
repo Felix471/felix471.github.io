@@ -1,37 +1,37 @@
 ---
-title: Ask the Fly
 slug: ask-the-fly
-summary: A chat interface over a genetics knowledge base, tuned for researchers who dislike chat interfaces.
-thumbnail: ../../assets/projects/ask-the-fly.svg
-tags: [TypeScript, LLM, Retrieval]
-demo_url: https://example.com/ask-the-fly
-repo_url: https://github.com/Felix471/ask-the-fly
-order: 2
-featured: true
+title: Ask the Fly
+summary: A fruit-fly brain model tastes a few dishes and picks one for you.
+links:
+  - { label: Try it, href: 'https://askthefly.app/' }
+  - { label: Source, href: 'https://github.com/Felix471/ask-the-fly' }
+image: ../../assets/projects/ask-the-fly-card.png
+tone: light
+alt: Ask the Fly tasting card with ranked dishes
+caption: A tasting result from Ask the Fly.
 ---
 
 ## What it is
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ask the Fly answers
-questions about *Drosophila* gene function by retrieving from a curated corpus
-and always showing the source paragraph next to the answer.
+Ask the Fly ranks dishes using precomputed responses from a published fruit-fly brain model. The menu uses taste inputs estimated for each dish. The brain view replays recorded spikes.
 
-## Why I built it
+The sprites are original pixel art from Ask the Fly, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-cubilia curae; researchers wanted citations, not confidence. Every answer is
-either grounded in a quoted passage or explicitly marked as "not in corpus".
+## What it measured
 
-## How it works
+The model reads one feeding motor neuron, left MN9. Its firing rate stands in for how strongly the fly extends its proboscis. Sugar increased the response and bitter input suppressed it. The lookup table covers 400 stimulus conditions with 30 trials per condition.
 
-1. Documents are chunked by section, not by token count
-2. Hybrid search: BM25 for gene symbols, embeddings for everything else
-3. The model is asked to quote before it is asked to summarise
+## What it does not do
 
-Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu
-vulputate magna eros eu erat. Aliquam erat volutpat.
+The model has no spontaneous activity. It covers the first bite only, at the labellar bristles. The feeding-state labels have no calibration against measured animal behaviour.
 
-## What I learned
+## Reproduce it
 
-Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.
-Phasellus ultrices nulla quis nibh. Quisque a lectus.
+From the source checkout, serve the shipped site and run the quick tests.
+
+```sh
+python -m http.server 8765 --directory site
+node --test site/test/app.test.mjs site/test/regress.test.mjs
+```
+
+To recompute the lookup table, use the verified simulation inputs and environment listed in the README. Run `scripts/run_grid.py --stage full` followed by `scripts/build_lookup.py`.

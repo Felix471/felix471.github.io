@@ -1,18 +1,37 @@
 ---
-import { site } from '../data/site';
+import { contactLinks, site } from '../data/site';
+import { poetry } from '../data/poems';
+import LinksRow from './LinksRow.astro';
 ---
 
-<section id="about" class="section" aria-labelledby="about-heading">
-  <div class="container">
-    <h2 id="about-heading">About</h2>
-    <div class="prose">
-      {site.about.map((paragraph) => <p>{paragraph}</p>)}
-    </div>
+<div class="back-page">
+  {poetry.poems.length > 0 && (
+    <section id="poetry">
+      <h2>Poetry</h2>
+      <p class="poetry-intro">{poetry.intro}</p>
+      <ul class="poems">
+        {poetry.poems.map(({ zh, en, url }) => (
+          <li>
+            <a href={url}>
+              <span class="poem-zh" lang="zh-Hans">{zh}</span>
+              {en && <span class="poem-en">{en}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="poetry-more"><a href={poetry.profileUrl}>All poems on Medium</a></p>
+    </section>
+  )}
+  <div class="back-page-end">
+    {site.about.length > 0 && (
+      <section id="about">
+        <h2>About</h2>
+        {site.about.map((paragraph) => <p>{paragraph}</p>)}
+      </section>
+    )}
+    <section id="contact">
+      <h2>Contact</h2>
+      <LinksRow links={contactLinks} />
+    </section>
   </div>
-</section>
-
-<style>
-  .prose p {
-    text-wrap: pretty;
-  }
-</style>
+</div>
