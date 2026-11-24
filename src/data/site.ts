@@ -18,7 +18,10 @@ export const site: Site = {
   github: 'https://github.com/Felix471',
   email: 'FelixWangShigiOu@outlook.com',
   linkedin: 'https://www.linkedin.com/in/ziyi-wang-984378125/',
-  about: [],
+  about: [
+    'I came to software sideways, after sociology in Japan and liberal studies. I live in Chinese, Japanese, and English, and I write poems in Chinese and publish English versions.',
+    'When I build software, I like testing a specific question and recording where the answer stops holding. That is how a fruit-fly brain model ended up picking lunch at the top of this page, with notes on what it cannot do.',
+  ],
 };
 
 export const contactLinks = [
