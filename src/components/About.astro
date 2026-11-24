@@ -5,23 +5,27 @@ import LinksRow from './LinksRow.astro';
 ---
 
 <div class="back-page">
-  {poetry.poems.length > 0 && (
-    <section id="poetry">
-      <h2>Poetry</h2>
-      <p class="poetry-intro">{poetry.intro}</p>
-      <ul class="poems">
-        {poetry.poems.map(({ zh, en, url }) => (
-          <li>
-            <a href={url}>
-              <span class="poem-zh" lang="zh-Hans">{zh}</span>
-              {en && <span class="poem-en">{en}</span>}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p class="poetry-more"><a href={poetry.profileUrl}>All poems on Medium</a></p>
-    </section>
-  )}
+  <section id="poetry">
+    <h2>Poetry</h2>
+    {poetry.poems.length > 0 ? (
+      <>
+        <p class="poetry-intro">{poetry.intro}</p>
+        <ul class="poems">
+          {poetry.poems.map(({ zh, en, url }) => (
+            <li>
+              <a href={url}>
+                <span class="poem-zh" lang="zh-Hans">{zh}</span>
+                {en && <span class="poem-en">{en}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {poetry.moreUrl && <p class="poetry-more"><a href={poetry.moreUrl}>{poetry.moreLabel}</a></p>}
+      </>
+    ) : (
+      <p class="poetry-intro">{poetry.placeholder}</p>
+    )}
+  </section>
   <div class="back-page-end">
     {site.about.length > 0 && (
       <section id="about">

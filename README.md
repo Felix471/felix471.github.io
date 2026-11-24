@@ -4,7 +4,7 @@ Felix's static Astro portfolio. The home page has a profile, the Ask the Fly pic
 
 ## Content
 
-- `src/data/poems.ts` holds the Poetry section: the intro line, the Medium profile link and the list of poems. An empty list hides the section.
+- `src/data/poems.ts` holds the Poetry section: the intro line, an optional link and the list of poems. While the list is empty the section shows a placeholder line.
 - `src/data/site.ts` holds the site metadata, contact links and About paragraphs. The cover layout and the languages line live in `src/components/Hero.astro`.
 - `src/data/fly-picker.ts` holds the dish readings and sprite references.
 - `src/content/projects/` holds the project Markdown files. Project images live in `src/assets/projects/`.

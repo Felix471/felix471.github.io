@@ -16,7 +16,6 @@ export const site: Site = {
   description: 'Projects by Felix: Ask the Fly, Retrace, basis and AI Avalon.',
   lang: 'en',
   github: 'https://github.com/Felix471',
-  email: 'FelixWangShigiOu@outlook.com',
   linkedin: 'https://www.linkedin.com/in/ziyi-wang-984378125/',
   about: [
     'I came to software sideways, after sociology in Japan and liberal studies. I live in Chinese, Japanese, and English, and I write poems in Chinese and publish English versions.',

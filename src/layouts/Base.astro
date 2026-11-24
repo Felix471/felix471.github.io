@@ -3,7 +3,6 @@ import '@fontsource-variable/newsreader/standard.css';
 import '@fontsource-variable/source-sans-3/wght.css';
 import '../styles/global.css';
 import { site } from '../data/site';
-import { poetry } from '../data/poems';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Footer from '../components/Footer.astro';
 
@@ -60,7 +59,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       </a>
       <nav aria-label="Primary">
         <a href="/#projects">Projects</a>
-        {poetry.poems.length > 0 && <a href="/#poetry">Poetry</a>}
+        <a href="/#poetry">Poetry</a>
         {site.about.length > 0 && <a href="/#about">About</a>}
         <a href="/#contact">Contact</a>
         <ThemeToggle />
